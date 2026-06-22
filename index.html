@@ -1,0 +1,1970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Janta Bakery · Jath</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <!-- Google Fonts: Playfair Display + Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,700&family=Inter:wght@300;400;600;700;800;900&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ─── RESET & BASE ─── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        :root {
+            --cream: #FDF6EC;
+            --white: #FFFDF9;
+            --soft-pink: #FBEAF0;
+            --pink: #F4C0D1;
+            --pink-deep: #D4537E;
+            --choco: #3E1C00;
+            --choco-mid: #7B3B00;
+            --choco-light: #C27036;
+            --gold: #C9933A;
+            --gold-light: #F0C060;
+            --text: #2C1800;
+            --text-muted: #7A5A3A;
+            --border: #E8D5BB;
+            --shadow: 0 8px 32px rgba(62, 28, 0, 0.10);
+            --radius: 22px;
+            --transition: 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+        img {
+            display: block;
+            max-width: 100%;
+        }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--choco-mid);
+        }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(28px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes floatY {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-14px);
+            }
+        }
+        @keyframes pulse {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.035);
+            }
+        }
+        @keyframes shimmer {
+            0%,
+            100% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 1;
+            }
+        }
+        @keyframes confettiFall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(130px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        @keyframes glowPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 8px rgba(201, 147, 58, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 28px rgba(201, 147, 58, 0.6), 0 0 60px rgba(201, 147, 58, 0.2);
+            }
+        }
+        @keyframes spinSlow {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.92);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fadeUp {
+            animation: fadeUp 0.5s ease both;
+        }
+        .animate-scaleIn {
+            animation: scaleIn 0.4s ease both;
+        }
+
+        /* ─── NAV ─── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 200;
+            background: rgba(253, 246, 236, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            height: 68px;
+            transition: all 0.3s;
+        }
+        .navbar.scrolled {
+            background: rgba(253, 246, 236, 0.97);
+            border-bottom-color: var(--border);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+        }
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+        .nav-logo-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--choco);
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            text-align: center;
+            line-height: 1;
+        }
+        .nav-logo-icon small {
+            font-size: 7px;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: block;
+        }
+        .nav-logo-icon strong {
+            font-size: 11px;
+            color: #fff;
+            font-weight: 900;
+            font-style: italic;
+            display: block;
+        }
+        .nav-logo-text {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--choco);
+            letter-spacing: 0.3px;
+        }
+        .nav-logo-text span {
+            font-size: 10px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-weight: 600;
+            display: block;
+        }
+        .nav-links {
+            display: flex;
+            gap: 2px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-links a {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            background: var(--soft-pink);
+            color: var(--choco-mid);
+            font-weight: 700;
+        }
+        .nav-wa {
+            margin-left: 6px;
+            background: #25D366;
+            color: #fff;
+            border-radius: 24px;
+            padding: 8px 20px;
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .nav-wa:hover {
+            transform: scale(1.04);
+        }
+        .nav-wa i {
+            font-size: 14px;
+        }
+
+        /* ─── SECTION UTILITIES ─── */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        .section-pad {
+            padding: 80px 0;
+        }
+        .section-header {
+            text-align: center;
+            margin-bottom: 44px;
+        }
+        .section-header .tag {
+            display: inline-block;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--gold);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 4vw, 40px);
+            font-weight: 900;
+            color: var(--choco);
+            margin: 0 0 10px;
+            line-height: 1.2;
+        }
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .floral-divider {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 16px auto 0;
+            max-width: 300px;
+        }
+        .floral-divider::before,
+        .floral-divider::after {
+            content: '';
+            flex: 1;
+            height: 1.5px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.4;
+        }
+        .floral-divider i {
+            color: var(--gold);
+            font-size: 14px;
+            opacity: 0.6;
+        }
+
+        /* ─── FLOATING PETALS ─── */
+        .petals-container {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+        .petal {
+            position: absolute;
+            bottom: -30px;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: floatY var(--dur, 12s) var(--delay, 0s) ease-in-out infinite;
+        }
+
+        /* ─── HERO ─── */
+        .hero {
+            min-height: 100vh;
+            background: linear-gradient(160deg, var(--cream) 0%, #FFF6E8 55%, var(--soft-pink) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 100px 1.5rem 60px;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            width: 100%;
+        }
+        .hero-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, rgba(201, 147, 58, 0.13), rgba(123, 59, 0, 0.13));
+            border: 1px solid rgba(201, 147, 58, 0.3);
+            border-radius: 24px;
+            padding: 6px 22px;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: var(--choco-mid);
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 7vw, 72px);
+            font-weight: 900;
+            color: var(--choco);
+            line-height: 1.1;
+            letter-spacing: -0.5px;
+        }
+        .hero-title .gold {
+            background: linear-gradient(135deg, var(--gold), var(--choco-mid), var(--gold));
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero-title .sub {
+            font-size: 0.45em;
+            font-weight: 700;
+            color: var(--choco-light);
+            -webkit-text-fill-color: var(--choco-light);
+            display: block;
+        }
+        .hero-desc {
+            font-size: clamp(15px, 2.2vw, 19px);
+            color: var(--text-muted);
+            max-width: 520px;
+            margin: 16px auto 10px;
+            line-height: 1.7;
+        }
+        .hero-prices {
+            display: inline-flex;
+            gap: 0;
+            margin: 20px 0 28px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 2px solid var(--gold);
+            box-shadow: 0 8px 24px rgba(201, 147, 58, 0.25);
+        }
+        .hero-prices .item {
+            padding: 16px 32px;
+            text-align: center;
+            color: #fff;
+        }
+        .hero-prices .item:first-child {
+            background: var(--choco);
+        }
+        .hero-prices .item:last-child {
+            background: var(--choco-mid);
+        }
+        .hero-prices .item small {
+            font-size: 11px;
+            letter-spacing: 2px;
+            opacity: 0.7;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .hero-prices .item strong {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--gold-light);
+            display: block;
+        }
+        .hero-cta {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+        }
+        .btn-primary {
+            background: #25D366;
+            color: #fff;
+            border-radius: 32px;
+            padding: 14px 38px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 8px 24px rgba(37, 211, 102, 0.4);
+            animation: pulse 2s ease-in-out infinite;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            transition: transform 0.2s;
+        }
+        .btn-primary:hover {
+            transform: scale(1.04);
+        }
+        .btn-secondary {
+            background: transparent;
+            color: var(--choco-mid);
+            border: 2px solid var(--choco-mid);
+            border-radius: 32px;
+            padding: 14px 38px;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-secondary:hover {
+            background: var(--choco-mid);
+            color: #fff;
+        }
+        .hero-location {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(201, 147, 58, 0.1);
+            border: 1px solid rgba(201, 147, 58, 0.3);
+            border-radius: 14px;
+            padding: 12px 24px;
+            font-size: 13px;
+            color: var(--choco-mid);
+            font-weight: 600;
+        }
+        .hero-location a {
+            color: var(--gold);
+            text-decoration: underline;
+        }
+        .hero-sub-admin {
+            margin-top: 10px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .hero-sub-admin a {
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* Hero cake image */
+        .hero-cake {
+            margin-top: 48px;
+            position: relative;
+            z-index: 1;
+            width: 300px;
+            height: 340px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: floatY 4s ease-in-out infinite;
+        }
+        .hero-cake img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(62, 28, 0, 0.22), 0 0 0 6px rgba(201, 147, 58, 0.15);
+        }
+        .hero-cake .glow-ring {
+            position: absolute;
+            inset: -6px;
+            border-radius: 28px;
+            border: 2px solid rgba(201, 147, 58, 0.35);
+            animation: shimmer 2.5s ease-in-out infinite;
+            pointer-events: none;
+        }
+        .hero-cake .price-badge {
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold), var(--choco-mid));
+            color: #fff;
+            border-radius: 24px;
+            padding: 8px 24px;
+            font-weight: 800;
+            font-size: 15px;
+            white-space: nowrap;
+            box-shadow: 0 6px 18px rgba(201, 147, 58, 0.45);
+        }
+
+        /* ─── CAKE CARDS ─── */
+        .cake-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 28px;
+        }
+        .cake-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 18px rgba(62, 28, 0, 0.06);
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+        .cake-card:hover {
+            transform: translateY(-10px) scale(1.01);
+            box-shadow: 0 24px 56px rgba(62, 28, 0, 0.14);
+        }
+        .cake-card .img-wrap {
+            height: 240px;
+            overflow: hidden;
+            position: relative;
+        }
+        .cake-card .img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            transition: transform 0.55s ease;
+            display: block;
+        }
+        .cake-card:hover .img-wrap img {
+            transform: scale(1.08);
+        }
+        .cake-card .img-wrap .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: linear-gradient(to top, rgba(253, 246, 236, 0.85), transparent);
+        }
+        .cake-card .badge {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            color: #fff;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .cake-card .watermark {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.88);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 800;
+            color: var(--choco);
+            text-align: center;
+            line-height: 1.1;
+            border: 1px solid var(--border);
+        }
+        .cake-card .body {
+            padding: 20px 22px;
+        }
+        .cake-card .body h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--choco);
+            margin: 0 0 6px;
+        }
+        .cake-card .body p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+            margin: 0 0 14px;
+        }
+        .cake-card .body .bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .cake-card .body .price {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--gold);
+        }
+        .cake-card .body .price-note {
+            font-size: 11px;
+            color: var(--pink-deep);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+        .cake-card .body .btn-order {
+            background: #25D366;
+            color: #fff;
+            border-radius: 20px;
+            padding: 9px 20px;
+            font-size: 12px;
+            font-weight: 700;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.35);
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .cake-card:hover .btn-order {
+            transform: scale(1.07);
+        }
+
+        /* ─── FLAVORS GRID (Enhanced) ─── */
+        .flavor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+        .flavor-item {
+            background: var(--white);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+            border: 1px solid var(--border);
+            position: relative;
+        }
+        .flavor-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+            border-color: var(--gold);
+        }
+        .flavor-item .flavor-img {
+            width: 100%;
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.4s;
+        }
+        .flavor-item:hover .flavor-img {
+            transform: scale(1.05);
+        }
+        .flavor-item .flavor-info {
+            padding: 14px 16px 16px;
+            text-align: center;
+            background: var(--white);
+            position: relative;
+        }
+        .flavor-item .flavor-info .name {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--choco);
+            margin-bottom: 4px;
+        }
+        .flavor-item .flavor-info .note {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+            background: rgba(0,0,0,0.04);
+            padding: 2px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+        /* Gradient overlays for each flavor (subtle) */
+        .flavor-item .flavor-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.1) 100%);
+            pointer-events: none;
+        }
+        .flavor-item .flavor-img {
+            position: relative;
+        }
+
+        /* ─── NOTICE BOXES ─── */
+        .notice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 28px;
+        }
+        .notice-box {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 18px 20px;
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .notice-box .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 4px;
+            flex-shrink: 0;
+        }
+        .notice-box .title {
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+        .notice-box .desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ─── POSTER / INFO ─── */
+        .poster-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+        .poster-section .poster-img {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 16px 48px rgba(62, 28, 0, 0.14);
+            border: 3px solid rgba(201, 147, 58, 0.2);
+        }
+        .poster-section .poster-img img {
+            width: 100%;
+            display: block;
+        }
+        .poster-section .info h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--choco);
+            line-height: 1.2;
+        }
+        .poster-section .info h2 small {
+            font-size: 18px;
+            color: var(--choco-light);
+            font-weight: 600;
+            display: block;
+        }
+        .poster-section .info p {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.8;
+            margin: 14px 0;
+        }
+        .info-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .info-list .item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .info-list .item i {
+            font-size: 16px;
+            margin-top: 2px;
+            color: var(--gold);
+            width: 20px;
+            text-align: center;
+        }
+        .info-list .item span {
+            color: var(--text);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        /* ─── WHY CHOOSE US ─── */
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .why-item {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 26px 20px;
+            border: 1px solid var(--border);
+            text-align: center;
+            transition: transform 0.25s, box-shadow 0.25s;
+        }
+        .why-item:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 14px 32px rgba(0, 0, 0, 0.07);
+        }
+        .why-item .icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            background: linear-gradient(135deg, var(--gold), var(--choco-mid));
+            border: 2px solid var(--gold-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 20px;
+        }
+        .why-item .title {
+            font-weight: 700;
+            color: var(--choco);
+            font-size: 15px;
+            margin-bottom: 8px;
+        }
+        .why-item .desc {
+            color: var(--text-muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* ─── CTA SECTION ─── */
+        .cta-section {
+            padding: 70px 1.5rem;
+            background: linear-gradient(135deg, var(--choco) 0%, var(--choco-mid) 100%);
+            text-align: center;
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta-section .inner {
+            position: relative;
+            z-index: 1;
+        }
+        .cta-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(24px, 4vw, 38px);
+            font-weight: 800;
+            margin: 0 0 10px;
+        }
+        .cta-section p {
+            font-size: 16px;
+            opacity: 0.8;
+            margin: 0 0 6px;
+        }
+        .cta-section .sub {
+            font-size: 13px;
+            opacity: 0.55;
+            margin: 0 0 30px;
+        }
+        .cta-btns {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .cta-btns .btn-wa {
+            background: #25D366;
+            color: #fff;
+            border-radius: 32px;
+            padding: 14px 34px;
+            font-size: 15px;
+            font-weight: 700;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s;
+        }
+        .cta-btns .btn-wa:hover {
+            transform: scale(1.04);
+        }
+        .cta-btns .btn-outline {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.35);
+            border-radius: 32px;
+            padding: 14px 34px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .cta-btns .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .cta-btns .btn-gold {
+            background: var(--gold);
+            color: var(--choco);
+            border-radius: 32px;
+            padding: 14px 34px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+        .cta-btns .btn-gold:hover {
+            transform: scale(1.04);
+        }
+
+        /* ─── CONTACT / ABOUT ─── */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 28px;
+        }
+        .contact-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 22px;
+            border: 1px solid var(--border);
+        }
+        .contact-card .label {
+            font-weight: 700;
+            color: var(--choco);
+            font-size: 13px;
+            margin-bottom: 6px;
+        }
+        .contact-card .value {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.6;
+        }
+        .contact-card .value a {
+            color: #25D366;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .map-card {
+            background: var(--white);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .map-card .map-placeholder {
+            height: 200px;
+            background: linear-gradient(135deg, var(--cream), var(--soft-pink));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .map-card .map-placeholder strong {
+            font-weight: 800;
+            color: var(--choco);
+            font-size: 18px;
+        }
+        .map-card .map-placeholder p {
+            color: var(--text-muted);
+            font-size: 13px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .map-card .map-placeholder .btn-map {
+            background: linear-gradient(135deg, var(--gold), var(--choco-mid));
+            color: #fff;
+            border-radius: 20px;
+            padding: 9px 24px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: transform 0.2s;
+        }
+        .map-card .map-placeholder .btn-map:hover {
+            transform: scale(1.04);
+        }
+
+        /* ─── ABOUT PAGE ─── */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 40px;
+        }
+        .about-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+        .about-card .title {
+            font-weight: 700;
+            color: var(--choco);
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .about-card .title i {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+        .about-card p {
+            color: var(--text-muted);
+            font-size: 13px;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        /* ─── FOOTER ─── */
+        .footer {
+            background: var(--choco);
+            color: #fff;
+            padding: 56px 1.5rem 28px;
+        }
+        .footer .inner {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 36px;
+            margin: 28px 0 40px;
+        }
+        .footer-grid .brand .logo-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            text-align: center;
+            line-height: 1;
+        }
+        .footer-grid .brand .logo-icon small {
+            font-size: 7px;
+            color: var(--gold-light);
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: block;
+        }
+        .footer-grid .brand .logo-icon strong {
+            font-size: 12px;
+            color: #fff;
+            font-weight: 900;
+            font-style: italic;
+            display: block;
+        }
+        .footer-grid .brand .name {
+            font-weight: 800;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+        .footer-grid .brand .sub {
+            font-size: 12px;
+            color: var(--gold-light);
+            margin-bottom: 12px;
+        }
+        .footer-grid .brand p {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+        .footer-grid .col .title {
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--gold);
+        }
+        .footer-grid .col a {
+            display: block;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 13px;
+            padding: 3px 0;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .footer-grid .col a:hover {
+            color: #fff;
+        }
+        .footer-grid .col .prices {
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 14px;
+            line-height: 2;
+        }
+        .footer-grid .col .prices strong {
+            color: var(--gold-light);
+        }
+        .footer-grid .col .prices small {
+            font-size: 12px;
+            opacity: 0.6;
+        }
+        .footer-grid .col .contact-text {
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 13px;
+            line-height: 1.9;
+            margin: 0 0 14px;
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.38);
+            margin-top: 16px;
+        }
+
+        /* ─── RESPONSIVE ─── */
+        @media (max-width: 992px) {
+            .poster-section {
+                grid-template-columns: 1fr;
+            }
+            .notice-grid {
+                grid-template-columns: 1fr;
+            }
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .flavor-grid {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+                height: 60px;
+            }
+            .nav-links a {
+                padding: 4px 10px;
+                font-size: 12px;
+            }
+            .nav-wa {
+                padding: 6px 14px;
+                font-size: 12px;
+            }
+            .hero-prices .item {
+                padding: 12px 18px;
+            }
+            .hero-prices .item strong {
+                font-size: 22px;
+            }
+            .hero-cake {
+                width: 220px;
+                height: 260px;
+            }
+            .cake-grid {
+                grid-template-columns: 1fr;
+            }
+            .flavor-grid {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
+            .why-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        @media (max-width: 480px) {
+            .nav-links a {
+                padding: 3px 8px;
+                font-size: 10px;
+            }
+            .nav-wa {
+                padding: 4px 10px;
+                font-size: 10px;
+            }
+            .nav-wa i {
+                font-size: 10px;
+            }
+            .hero-prices {
+                flex-direction: column;
+                border-radius: 12px;
+            }
+            .hero-prices .item:first-child {
+                border-bottom: 1px solid rgba(201, 147, 58, 0.3);
+            }
+            .hero-prices .item {
+                padding: 12px 20px;
+            }
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+            .flavor-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        /* ─── PAGE TRANSITIONS ─── */
+        .page-transition {
+            animation: fadeUp 0.45s ease both;
+        }
+
+        /* ─── SECTION BACKGROUNDS ─── */
+        .bg-cream {
+            background: var(--cream);
+        }
+        .bg-white {
+            background: var(--white);
+        }
+        .bg-soft-pink {
+            background: var(--soft-pink);
+        }
+        .bg-gradient-pink {
+            background: linear-gradient(135deg, var(--cream), var(--soft-pink));
+        }
+
+        /* ─── MISC ─── */
+        .text-gold {
+            color: var(--gold);
+        }
+        .text-choco {
+            color: var(--choco);
+        }
+        .text-muted {
+            color: var(--text-muted);
+        }
+        .fw-800 {
+            font-weight: 800;
+        }
+        .fw-700 {
+            font-weight: 700;
+        }
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .gap-8 {
+            gap: 8px;
+        }
+        .flex-center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .relative {
+            position: relative;
+        }
+        .overflow-hidden {
+            overflow: hidden;
+        }
+        .z-1 {
+            z-index: 1;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        /* special notice colors */
+        .notice-red {
+            border: 2px solid #993556;
+        }
+        .notice-red .title {
+            color: #993556;
+        }
+        .notice-gold {
+            border: 2px solid var(--gold);
+        }
+        .notice-gold .title {
+            color: var(--choco-mid);
+        }
+        .notice-red .dot {
+            background: #993556;
+        }
+        .notice-gold .dot {
+            background: var(--gold);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================================ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-logo" onclick="navigate('home')">
+            <div class="nav-logo-icon">
+                <small>DELICIOUS</small>
+                <strong>Janta</strong>
+                <small>BAKERY</small>
+            </div>
+            <div class="nav-logo-text">
+                JANTA BAKERY
+                <span>JATH</span>
+            </div>
+        </div>
+        <div class="nav-links" id="navLinks">
+            <a class="active" data-page="home" onclick="navigate('home')">Home</a>
+            <a data-page="about" onclick="navigate('about')">About</a>
+            <a data-page="contact" onclick="navigate('contact')">Contact</a>
+            <a href="https://wa.me/918797135656" target="_blank" class="nav-wa">
+                <i class="fab fa-whatsapp"></i> Order
+            </a>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: HOME -->
+    <!-- ============================================================ -->
+    <div id="page-home" class="page-transition">
+
+        <!-- HERO -->
+        <section class="hero">
+            <div class="petals-container" id="petalsContainer"></div>
+
+            <div class="hero-content">
+                <div class="hero-badge">Wholesale Prices · Custom Orders · Jath, Maharashtra</div>
+
+                <h1 class="hero-title">
+                    <span class="gold">JANTA BAKERY</span>
+                    <span class="sub">JATH</span>
+                </h1>
+
+                <div class="floral-divider">
+                    <i class="fas fa-leaf"></i>
+                    <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                    <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                </div>
+
+                <p class="hero-desc">
+                    Premium ice cakes made fresh on order — 100% pure &amp; trustworthy.
+                    <br />Wholesale prices. Every celebration, perfectly crafted.
+                </p>
+
+                <div class="hero-prices">
+                    <div class="item">
+                        <small>HALF KG ICE CAKE</small>
+                        <strong>₹ 180</strong>
+                    </div>
+                    <div class="item">
+                        <small>1 KG ICE CAKE</small>
+                        <strong>₹ 360</strong>
+                    </div>
+                </div>
+
+                <div class="hero-cta">
+                    <a href="https://wa.me/918797135656" target="_blank" class="btn-primary">
+                        <i class="fab fa-whatsapp"></i> Order on WhatsApp
+                    </a>
+                </div>
+
+                <div class="hero-location">
+                    <i class="fas fa-map-pin"></i>
+                    <span>Self Collection — <a href="https://maps.app.goo.gl/MxXZVPMmp8L6Cvz7A" target="_blank">More Colony, Behind Court, Jath</a></span>
+                </div>
+                <div class="hero-sub-admin">
+                    Sub-admin: <a href="https://wa.me/917517265656" target="_blank">+91 751 726 5656</a>
+                </div>
+            </div>
+
+            <div class="hero-cake">
+                <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=600&h=680&fit=crop&crop=center" alt="Janta Bakery Special Cake" />
+                <div class="glow-ring"></div>
+                <div class="price-badge">Half Kg: ₹180 &nbsp;|&nbsp; 1 Kg: ₹360</div>
+            </div>
+        </section>
+
+        <!-- OUR SPECIAL CAKES -->
+        <section class="section-pad bg-white">
+            <div class="container">
+                <div class="section-header">
+                    <div class="tag">From Our Bakery</div>
+                    <h2>Our Special Cakes</h2>
+                    <p>Every cake is made fresh on order at Janta Bakery, Jath</p>
+                    <div class="floral-divider">
+                        <i class="fas fa-leaf"></i>
+                        <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                        <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                    </div>
+                </div>
+
+                <div class="cake-grid" id="cakeGrid">
+                    <!-- Cards will be injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- FLAVORS (Enhanced) -->
+        <section class="section-pad bg-cream relative overflow-hidden">
+            <div class="petals-container" id="petalsContainer2"></div>
+            <div class="container relative z-1">
+                <div class="section-header">
+                    <div class="tag">Available Flavors</div>
+                    <h2>8 Delicious Flavors</h2>
+                    <p>All cakes available in egg and eggless variants</p>
+                    <div class="floral-divider">
+                        <i class="fas fa-leaf"></i>
+                        <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                        <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                    </div>
+                </div>
+
+                <div class="flavor-grid" id="flavorGrid">
+                    <!-- Flavors injected by JS -->
+                </div>
+
+                <div class="notice-grid">
+                    <div class="notice-box notice-red">
+                        <div class="dot"></div>
+                        <div>
+                            <div class="title">Red Velvet — Special Orders Only</div>
+                            <div class="desc">Available above 1 Kg with custom decoration. Contact via WhatsApp to book.</div>
+                        </div>
+                    </div>
+                    <div class="notice-box notice-gold">
+                        <div class="dot"></div>
+                        <div>
+                            <div class="title">Rasmalai — Self Collection Only</div>
+                            <div class="desc">No home delivery. Collect directly from our bakery in Jath.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- POSTER / INFO -->
+        <section class="section-pad bg-white">
+            <div class="container">
+                <div class="poster-section">
+                    <div class="poster-img">
+                        <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=500&fit=crop&crop=center" alt="Janta Bakery Official" />
+                    </div>
+                    <div class="info">
+                        <div class="floral-divider" style="justify-content:flex-start;margin:0 0 12px 0;">
+                            <i class="fas fa-leaf"></i>
+                            <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                            <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                        </div>
+                        <h2>
+                            Janta Bakery Jath
+                            <small>Hujare Brothers</small>
+                        </h2>
+                        <p>
+                            The one and only place in Jath to get wholesale-priced ice cakes made fresh on order.
+                            100% pure, delicious, and trustworthy — Janta Bakery has been the first choice of customers in Jath.
+                        </p>
+                        <div class="info-list">
+                            <div class="item"><i class="fas fa-map-pin"></i><span>More Colony, Behind Court, Near Pakhali Grocery Store, Jath</span></div>
+                            <div class="item"><i class="fas fa-phone"></i><span>+91 87971 35656 (Main)</span></div>
+                            <div class="item"><i class="fas fa-phone"></i><span>+91 751 726 5656 (Sub-admin)</span></div>
+                        </div>
+                        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px;">
+                            <a href="https://wa.me/918797135656" target="_blank" class="btn-primary" style="padding:10px 24px;font-size:13px;animation:none;box-shadow:0 4px 12px rgba(37,211,102,0.35);">
+                                <i class="fab fa-whatsapp"></i> WhatsApp Order
+                            </a>
+                            <a href="https://maps.app.goo.gl/MxXZVPMmp8L6Cvz7A" target="_blank" style="background:linear-gradient(135deg,var(--gold),var(--choco-mid));color:#fff;border-radius:24px;padding:10px 24px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:transform 0.2s;">
+                                <i class="fas fa-map-marked-alt"></i> View on Maps
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WHY CHOOSE US -->
+        <section class="section-pad bg-gradient-pink relative overflow-hidden">
+            <div class="petals-container" id="petalsContainer3"></div>
+            <div class="container relative z-1">
+                <div class="section-header">
+                    <div class="tag">Our Promise</div>
+                    <h2>Why Janta Bakery?</h2>
+                    <div class="floral-divider">
+                        <i class="fas fa-leaf"></i>
+                        <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                        <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                    </div>
+                </div>
+                <div class="why-grid" id="whyGrid">
+                    <!-- Injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta-section">
+            <div class="petals-container" id="petalsContainer4"></div>
+            <div class="inner">
+                <div class="floral-divider" style="margin-bottom:20px;">
+                    <i class="fas fa-leaf" style="color:var(--gold-light);"></i>
+                    <i class="fas fa-circle" style="font-size:6px;opacity:0.3;color:#fff;"></i>
+                    <i class="fas fa-leaf" style="transform:scaleX(-1);color:var(--gold-light);"></i>
+                </div>
+                <h2>Ready to Order Your Dream Cake?</h2>
+                <p>Place your order instantly on WhatsApp — self collection at bakery</p>
+                <p class="sub">Main: +91 87971 35656 &nbsp;|&nbsp; Sub-admin: +91 751 726 5656</p>
+                <div class="cta-btns">
+                    <a href="https://wa.me/918797135656" target="_blank" class="btn-wa">
+                        <i class="fab fa-whatsapp"></i> Main WhatsApp
+                    </a>
+                    <a href="https://wa.me/917517265656" target="_blank" class="btn-outline">
+                        <i class="fab fa-whatsapp"></i> Sub-admin WhatsApp
+                    </a>
+                    <a href="https://maps.app.goo.gl/MxXZVPMmp8L6Cvz7A" target="_blank" class="btn-gold">
+                        <i class="fas fa-map-marked-alt"></i> Find Us on Maps
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: ABOUT -->
+    <!-- ============================================================ -->
+    <div id="page-about" class="page-transition" style="display:none;padding-top:80px;min-height:100vh;background:var(--cream);">
+        <div class="container" style="padding:56px 1.5rem;max-width:960px;">
+            <div style="border-radius:24px;overflow:hidden;margin-bottom:40px;box-shadow:0 16px 48px rgba(62,28,0,0.14);border:3px solid rgba(201,147,58,0.2);max-width:480px;margin-left:auto;margin-right:auto;">
+                <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&h=500&fit=crop&crop=center" alt="Janta Bakery Jath" style="width:100%;display:block;" />
+            </div>
+
+            <div class="section-header">
+                <div class="tag">Our Story</div>
+                <h2>About Janta Bakery, Jath</h2>
+                <p>Hujare Brothers — Jath's most trusted bakery</p>
+                <div class="floral-divider">
+                    <i class="fas fa-leaf"></i>
+                    <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                    <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                </div>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-card">
+                    <div class="title"><i class="fas fa-history"></i> Our Story</div>
+                    <p>Janta Bakery, run by Hujare Brothers, is the premier ice cake destination in Jath, Maharashtra. We started with a simple mission — to make premium quality cakes available at wholesale prices for every family in Jath.</p>
+                </div>
+                <div class="about-card">
+                    <div class="title"><i class="fas fa-bullseye"></i> Our Mission</div>
+                    <p>To provide fresh, delicious, 100% pure ice cakes for every celebration — at the most honest wholesale prices in the region. Every cake is made fresh on order.</p>
+                </div>
+                <div class="about-card">
+                    <div class="title"><i class="fas fa-tags"></i> Our Prices</div>
+                    <p>Half Kg Ice Cake: <strong style="color:var(--gold);">₹ 180</strong><br />1 Kg Ice Cake: <strong style="color:var(--gold);">₹ 360</strong><br />Special cakes above 1 Kg priced on order. Always wholesale rates — the best in Jath.</p>
+                </div>
+                <div class="about-card">
+                    <div class="title"><i class="fas fa-handshake"></i> Our Promise</div>
+                    <p>Fresh ingredients every day. Pure, trustworthy quality. Egg and eggless options. Custom designs from your reference photos. Timely collection. Customer satisfaction is our first priority.</p>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:36px;">
+                <div style="border-radius:16px;overflow:hidden;height:200px;box-shadow:0 8px 24px rgba(62,28,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=400&h=400&fit=crop&crop=center" style="width:100%;height:100%;object-fit:cover;object-position:center;" alt="Cake" />
+                </div>
+                <div style="border-radius:16px;overflow:hidden;height:200px;box-shadow:0 8px 24px rgba(62,28,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=400&h=400&fit=crop&crop=center" style="width:100%;height:100%;object-fit:cover;object-position:center;" alt="Cake" />
+                </div>
+                <div style="border-radius:16px;overflow:hidden;height:200px;box-shadow:0 8px 24px rgba(62,28,0,0.1);">
+                    <img src="https://images.unsplash.com/photo-1563729784474-e77d27693338?w=400&h=400&fit=crop&crop=center" style="width:100%;height:100%;object-fit:cover;object-position:center;" alt="Cake" />
+                </div>
+            </div>
+
+            <div style="background:linear-gradient(135deg,var(--choco),var(--choco-mid));border-radius:22px;padding:36px;text-align:center;color:#fff;">
+                <div class="floral-divider" style="margin-bottom:14px;">
+                    <i class="fas fa-leaf" style="color:var(--gold-light);"></i>
+                    <i class="fas fa-circle" style="font-size:6px;opacity:0.3;color:#fff;"></i>
+                    <i class="fas fa-leaf" style="transform:scaleX(-1);color:var(--gold-light);"></i>
+                </div>
+                <h2 style="font-size:24px;font-weight:800;margin:14px 0 12px;">Visit Our Bakery</h2>
+                <p style="opacity:0.85;margin:0 0 6px;font-size:14px;">More Colony, Behind Court, Near Pakhali Grocery Store, Jath</p>
+                <p style="opacity:0.85;margin:0 0 6px;font-size:14px;">Sangli District, Maharashtra</p>
+                <p style="opacity:0.85;margin:0 0 20px;font-size:14px;">+91 87971 35656 &nbsp;|&nbsp; +91 751 726 5656</p>
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+                    <a href="https://wa.me/918797135656" target="_blank" style="background:#25D366;color:#fff;border-radius:22px;padding:10px 24px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:transform 0.2s;">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Order
+                    </a>
+                    <a href="https://maps.app.goo.gl/MxXZVPMmp8L6Cvz7A" target="_blank" style="background:var(--gold);color:var(--choco);border-radius:22px;padding:10px 24px;font-size:13px;font-weight:700;display:inline-flex;align-items:center;gap:6px;transition:transform 0.2s;">
+                        <i class="fas fa-map-marked-alt"></i> Open in Google Maps
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- PAGE: CONTACT -->
+    <!-- ============================================================ -->
+    <div id="page-contact" class="page-transition" style="display:none;padding-top:80px;min-height:100vh;background:var(--cream);">
+        <div class="container" style="max-width:800px;padding:56px 1.5rem;">
+            <div class="section-header">
+                <div class="tag">Get in Touch</div>
+                <h2>Contact Janta Bakery</h2>
+                <p>WhatsApp us for fastest response — we reply within minutes</p>
+                <div class="floral-divider">
+                    <i class="fas fa-leaf"></i>
+                    <i class="fas fa-circle" style="font-size:6px;opacity:0.3;"></i>
+                    <i class="fas fa-leaf" style="transform:scaleX(-1);"></i>
+                </div>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="label"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px;"></i> Main WhatsApp</div>
+                    <div class="value"><a href="https://wa.me/918797135656" target="_blank">+91 87971 35656</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="label"><i class="fab fa-whatsapp" style="color:#25D366;margin-right:6px;"></i> Sub-admin WhatsApp</div>
+                    <div class="value"><a href="https://wa.me/917517265656" target="_blank" style="color:var(--choco-mid);">+91 751 726 5656</a></div>
+                </div>
+                <div class="contact-card">
+                    <div class="label"><i class="fas fa-map-pin" style="color:var(--gold);margin-right:6px;"></i> Address</div>
+                    <div class="value">More Colony, Behind Court, Near Pakhali Grocery Store, Jath, Sangli District, Maharashtra</div>
+                </div>
+                <div class="contact-card">
+                    <div class="label"><i class="fas fa-clock" style="color:var(--gold);margin-right:6px;"></i> Hours</div>
+                    <div class="value">Monday – Sunday: 8:00 AM – 9:00 PM</div>
+                </div>
+            </div>
+
+            <div class="map-card">
+                <div class="map-placeholder">
+                    <strong>JANTA BAKERY JATH</strong>
+                    <p>More Colony, Behind Court,<br />Near Pakhali Grocery Store, Jath</p>
+                    <a href="https://maps.app.goo.gl/MxXZVPMmp8L6Cvz7A" target="_blank" class="btn-map">
+                        <i class="fas fa-map-marked-alt"></i> Open Google Maps
+                    </a>
+                </div>
+            </div>
+
+            <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+                <a href="https://wa.me/918797135656" target="_blank" style="background:#25D366;color:#fff;border-radius:28px;padding:13px 30px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(37,211,102,0.35);transition:transform 0.2s;">
+                    <i class="fab fa-whatsapp"></i> Main WhatsApp — +91 87971 35656
+                </a>
+                <a href="https://wa.me/917517265656" target="_blank" style="background:var(--choco-mid);color:#fff;border-radius:28px;padding:13px 30px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:transform 0.2s;">
+                    <i class="fab fa-whatsapp"></i> Sub-admin — +91 751 726 5656
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================================ -->
+    <footer class="footer" id="mainFooter">
+        <div class="inner">
+            <div class="floral-divider" style="max-width:100%;">
+                <i class="fas fa-leaf" style="color:var(--gold-light);"></i>
+                <i class="fas fa-circle" style="font-size:6px;opacity:0.3;color:#fff;"></i>
+                <i class="fas fa-leaf" style="transform:scaleX(-1);color:var(--gold-light);"></i>
+            </div>
+
+            <div class="footer-grid">
+                <div class="brand">
+                    <div class="logo-icon">
+                        <small>DELICIOUS</small>
+                        <strong>Janta</strong>
+                        <small>BAKERY</small>
+                    </div>
+                    <div class="name">JANTA BAKERY JATH</div>
+                    <div class="sub">Hujare Brothers</div>
+                    <p>Jath's most trusted bakery. Wholesale ice cakes made fresh on order since day one.</p>
+                </div>
+                <div class="col">
+                    <div class="title">Quick Links</div>
+                    <a onclick="navigate('home')">Home</a>
+                    <a onclick="navigate('about')">About</a>
+                    <a onclick="navigate('contact')">Contact</a>
+                </div>
+                <div class="col">
+                    <div class="title">Prices</div>
+                    <div class="prices">
+                        Half Kg Ice Cake: <strong>₹ 180</strong><br />
+                        1 Kg Ice Cake: <strong>₹ 360</strong><br />
+                        <small>Special orders above 1 Kg — price on enquiry</small>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="title">Contact</div>
+                    <div class="contact-text">
+                        More Colony, Behind Court,<br />
+                        Near Pakhali Grocery Store, Jath,<br />
+                        Sangli District, Maharashtra<br /><br />
+                        +91 87971 35656<br />
+                        +91 751 726 5656
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                        <a href="https://wa.me/918797135656" target="_blank" style="background:#25D366;color:#fff;border-radius:16px;padding:6px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;">
+                            <i class="fab fa-whatsapp"></i> WhatsApp
+                        </a>
+                        <a href="https://maps.app.goo.gl/MxXZVPMmp8L6Cvz7A" target="_blank" style="background:var(--gold);color:var(--choco);border-radius:16px;padding:6px 14px;font-size:12px;font-weight:700;display:inline-flex;align-items:center;gap:4px;">
+                            <i class="fas fa-map-marked-alt"></i> Maps
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floral-divider" style="max-width:100%;opacity:0.4;">
+                <i class="fas fa-leaf" style="color:var(--gold-light);"></i>
+                <i class="fas fa-circle" style="font-size:6px;opacity:0.3;color:#fff;"></i>
+                <i class="fas fa-leaf" style="transform:scaleX(-1);color:var(--gold-light);"></i>
+            </div>
+
+            <div class="footer-bottom">
+                <span>2026 JANTA BAKERY JATH. All rights reserved.</span>
+                <span>Hujare Brothers — Made with pride in Jath, Maharashtra</span>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+    <script>
+        // ─── DATA ──────────────────────────────────────────────────────────────
+        const WA_MAIN = '918797135656';
+        const WA_SUB = '917517265656';
+
+        const CAKES = [{
+            id: 1,
+            name: 'Anniversary Special Cake',
+            desc: '2-tier pink ombre cake with fresh roses, gold hearts and Happy Anniversary topper.',
+            price: 'Price on Confirmation',
+            priceNote: 'Decided face-to-face at time of order',
+            badge: '2-Tier Special',
+            badgeColor: '#993556',
+            img: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=600&h=480&fit=crop&crop=center'
+        }, {
+            id: 2,
+            name: 'Ring Ceremony Cake',
+            desc: 'Elegant pink-white cake with hand-painted butterflies and golden Ring Ceremony topper.',
+            price: 'Price on Confirmation',
+            priceNote: 'Decided face-to-face at time of order',
+            badge: 'Custom Design',
+            badgeColor: '#6B3FA0',
+            img: 'https://images.unsplash.com/photo-1535254973040-607b474cb50d?w=600&h=480&fit=crop&crop=center'
+        }, {
+            id: 3,
+            name: 'Birthday Special Cake',
+            desc: 'Chocolate cake with fresh cream frosting, colorful sprinkles and Happy Birthday topper.',
+            price: 'Price on Confirmation',
+            priceNote: 'Decided face-to-face at time of order',
+            badge: 'Bestseller',
+            badgeColor: '#3B6D11',
+            img: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop'
+        }];
+
+        // Enhanced Flavors with images and gradient backgrounds
+        const FLAVORS = [{
+            name: 'Chocolate',
+            img: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&h=300&fit=crop&crop=center',
+            note: 'Egg / Eggless',
+            bg: 'linear-gradient(135deg, #3E1C00, #7B3B00)'
+        }, {
+            name: 'Black Forest',
+            img: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=400&h=300&fit=crop&crop=center',
+            note: 'Egg / Eggless',
+            bg: 'linear-gradient(135deg, #4A1B0C, #8B3A2A)'
+        }, {
+            name: 'Strawberry',
+            img: 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&h=300&fit=crop&crop=center',
+            note: 'Egg / Eggless',
+            bg: 'linear-gradient(135deg, #D4537E, #F4C0D1)'
+        }, {
+            name: 'Pineapple',
+            img: 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=400&h=300&q=80',
+            note: 'Egg / Eggless',
+            bg: 'linear-gradient(135deg, #3B6D11, #A8D08D)'
+        }, {
+            name: 'Butterscotch',
+            img: 'https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?w=400&h=300&fit=crop&crop=center',
+            note: 'Egg / Eggless',
+            bg: 'linear-gradient(135deg, #7B3B00, #F0C060)'
+        }, {
+            name: 'Rasmalai',
+            img: 'https://images.unsplash.com/photo-1551024601-bec78aea704b?auto=format&fit=crop&w=400&h=300&q=80',
+            note: 'Self-collect only',
+            bg: 'linear-gradient(135deg, #5A3A7E, #B39DDB)'
+        }, {
+            name: 'Rose Gulkand',
+            img: 'https://images.unsplash.com/photo-1627308595229-7830a5c91f9f?auto=format&fit=crop&w=400&h=300&q=80',
+            note: 'Special order',
+            bg: 'linear-gradient(135deg, #B02060, #F4C0D1)'
+        }, {
+            name: 'Vanilla',
+            img: 'https://images.unsplash.com/photo-1571115177098-24ec42ed204d?auto=format&fit=crop&w=400&h=300&q=80',
+            note: 'Egg / Eggless',
+            bg: 'linear-gradient(135deg, #6B5000, #F5E6CA)'
+        }];
+
+        const WHY = [
+            { title: 'Wholesale Rates', desc: 'Best prices in Jath — Half Kg at ₹180, 1 Kg at ₹360' },
+            { title: 'Made on Order', desc: 'Every ice cake is freshly prepared after you place your order' },
+            { title: '100% Pure', desc: 'Only the finest ingredients — pure, fresh and trustworthy' },
+            { title: 'Custom Designs', desc: 'Send us a reference photo — we recreate it with perfection' },
+            { title: 'Eggless Available', desc: 'All flavors available in pure eggless variants' },
+            { title: '8 Flavors', desc: 'Chocolate, Black Forest, Strawberry, Pineapple, Butterscotch, Rasmalai, Rose Gulkand, Vanilla' }
+        ];
+
+        // ─── NAVIGATION ────────────────────────────────────────────────────────
+        function navigate(page) {
+            document.querySelectorAll('[id^="page-"]').forEach(el => el.style.display = 'none');
+            const target = document.getElementById('page-' + page);
+            if (target) {
+                target.style.display = 'block';
+                target.style.animation = 'none';
+                requestAnimationFrame(() => {
+                    target.style.animation = 'fadeUp 0.45s ease both';
+                });
+            }
+            document.querySelectorAll('.nav-links a[data-page]').forEach(a => {
+                a.classList.toggle('active', a.dataset.page === page);
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ─── NAV SCROLL ──────────────────────────────────────────────────────
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            nav.classList.toggle('scrolled', window.scrollY > 10);
+        });
+
+        // ─── PETALS ──────────────────────────────────────────────────────────
+        function createPetals(containerId, count = 14) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+            const colors = ['#F4C0D1', '#FBEAF0', '#E8D5BB', '#F0C060', '#FFF0DC'];
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                const size = 10 + Math.random() * 18;
+                p.style.cssText = `
+              left: ${Math.random() * 100}%;
+              width: ${size}px;
+              height: ${size * (i % 3 === 1 ? 0.6 : 1)}px;
+              border-radius: ${i % 3 === 2 ? '4px' : '50%'};
+              background: ${colors[i % colors.length]};
+              --dur: ${10 + Math.random() * 8}s;
+              --delay: ${Math.random() * 8}s;
+            `;
+                container.appendChild(p);
+            }
+        }
+        createPetals('petalsContainer', 12);
+        createPetals('petalsContainer2', 10);
+        createPetals('petalsContainer3', 10);
+        createPetals('petalsContainer4', 8);
+
+        // ─── RENDER CAKES ────────────────────────────────────────────────────
+        function renderCakes() {
+            const grid = document.getElementById('cakeGrid');
+            grid.innerHTML = CAKES.map(c => `
+            <div class="cake-card">
+              <div class="img-wrap">
+                <img src="${c.img}" alt="${c.name}" loading="lazy" />
+                <div class="overlay"></div>
+                <div class="badge" style="background:${c.badgeColor};">${c.badge}</div>
+                <div class="watermark">Janta<br />Bakery</div>
+              </div>
+              <div class="body">
+                <h3>${c.name}</h3>
+                <p>${c.desc}</p>
+                <div class="bottom">
+                  <div>
+                    <div class="price">${c.price}</div>
+                    ${c.priceNote ? `<div class="price-note">${c.priceNote}</div>` : ''}
+                  </div>
+                  <button class="btn-order" onclick="orderCake('${c.name}')">
+                    <i class="fab fa-whatsapp"></i> Order
+                  </button>
+                </div>
+              </div>
+            </div>
+          `).join('');
+        }
+        renderCakes();
+
+        // ─── RENDER FLAVORS (Enhanced) ──────────────────────────────────────
+        function renderFlavors() {
+            const grid = document.getElementById('flavorGrid');
+            grid.innerHTML = FLAVORS.map(f => `
+            <div class="flavor-item" onclick="orderFlavor('${f.name}')">
+              <div class="flavor-img" style="background-image: url('${f.img}');"></div>
+              <div class="flavor-info" style="background: ${f.bg}; color: #fff;">
+                <div class="name">${f.name}</div>
+                <div class="note" style="background: rgba(255,255,255,0.2); color: #fff;">${f.note}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+        renderFlavors();
+
+        // ─── RENDER WHY ──────────────────────────────────────────────────────
+        function renderWhy() {
+            const grid = document.getElementById('whyGrid');
+            const icons = ['fa-tags', 'fa-clock', 'fa-check-circle', 'fa-paint-brush', 'fa-egg', 'fa-utensils'];
+            grid.innerHTML = WHY.map((w, i) => `
+            <div class="why-item">
+              <div class="icon"><i class="fas ${icons[i % icons.length]}"></i></div>
+              <div class="title">${w.title}</div>
+              <div class="desc">${w.desc}</div>
+            </div>
+          `).join('');
+        }
+        renderWhy();
+
+        // ─── ORDER FUNCTIONS ─────────────────────────────────────────────────
+        function orderCake(name) {
+            const msg = encodeURIComponent(`Hi Janta Bakery! I want to order *${name}*. Please share details.`);
+            window.open(`https://wa.me/${WA_MAIN}?text=${msg}`, '_blank');
+        }
+
+        function orderFlavor(name) {
+            const msg = encodeURIComponent(`Hi! I want to order a *${name}* cake from Janta Bakery. Please guide me.`);
+            window.open(`https://wa.me/${WA_MAIN}?text=${msg}`, '_blank');
+        }
+
+        // ─── INIT ────────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            navigate('home');
+        });
+
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#', '');
+            if (['home', 'about', 'contact'].includes(hash)) {
+                navigate(hash);
+            }
+        });
+
+        console.log('🍰 Janta Bakery — Jath\'s finest!');
+    </script>
+
+</body>
+</html>
